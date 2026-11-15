@@ -133,6 +133,7 @@ local Water = WorldOrigin and WorldOrigin:FindFirstChild("Foam;")
 if Water then
     Water:Destroy()
 end
+end) -- fecha a funcao gay iniciada acima
 
 local Attack = {}
 Attack.__index = Attack
