@@ -105,7 +105,15 @@ weaponSc = function(weapon)
     end
   end
 end
-hookfunction(require(game:GetService("ReplicatedStorage").Effect.Container.Death),function() end)
+local Effect = game:GetService("ReplicatedStorage"):FindFirstChild("Effect")
+if Effect and Effect:FindFirstChild("Container") then
+    local Death = Effect.Container:FindFirstChild("Death")
+    if Death and Death:IsA("ModuleScript") then
+        pcall(function()
+            hookfunction(require(Death), function() end)
+        end)
+    end
+	end
 hookfunction(require(game:GetService("ReplicatedStorage"):WaitForChild("GuideModule")).ChangeDisplayedNPC,function()end)
 hookfunction(error, function()end)
 hookfunction(warn, function()end)
