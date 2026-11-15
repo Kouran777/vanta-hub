@@ -126,9 +126,13 @@ gay = (function()
     local darkFog = lightingLayers:FindFirstChild("DarkFog")
     if darkFog then darkFog:Destroy() end
   end
-  local Water = workspace._WorldOrigin["Foam;"]
-  if Water and workspace._WorldOrigin["Foam;"] then Water:Destroy() end        
-end)()
+  
+local WorldOrigin = workspace:FindFirstChild("_WorldOrigin")
+local Water = WorldOrigin and WorldOrigin:FindFirstChild("Foam;")
+if Water then
+    Water:Destroy()
+end
+
 local Attack = {}
 Attack.__index = Attack
 Attack.Alive = function(model) if not model then return end local Humanoid = model:FindFirstChild("Humanoid") return Humanoid and Humanoid.Health > 0 end
