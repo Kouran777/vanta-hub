@@ -116,8 +116,8 @@ if Effect and Effect:FindFirstChild("Container") then
     end
 	end
 hookfunction(require(game:GetService("ReplicatedStorage"):WaitForChild("GuideModule")).ChangeDisplayedNPC,function()end)
-hookfunction(error, function()end)
-hookfunction(warn, function()end)
+-- Mantem error ativo para mostrar falhas reais
+-- Mantem warn ativo para diagnostico
 local Rock = workspace:FindFirstChild("Rocks")
 if Rock then Rock:Destroy()end
 gay = (function()
@@ -138,7 +138,21 @@ end) -- fecha a funcao gay iniciada acima
 local Attack = {}
 Attack.__index = Attack
 Attack.Alive = function(model) if not model then return end local Humanoid = model:FindFirstChild("Humanoid") return Humanoid and Humanoid.Health > 0 end
-Attack.Pos = function(model,dist) return (Root.Position - mode.Position).Magnitude <= dist end
+Attack.Pos = function(target, dist)
+  local character = plr.Character
+  local root = character and character:FindFirstChild("HumanoidRootPart")
+  if not root or not target or type(dist) ~= "number" then return false end
+  local position
+  if typeof(target) == "Vector3" then
+    position = target
+  elseif typeof(target) == "CFrame" then
+    position = target.Position
+  elseif typeof(target) == "Instance" then
+    local part = target:IsA("BasePart") and target or target:FindFirstChild("HumanoidRootPart")
+    position = part and part.Position
+  end
+  return position ~= nil and (root.Position - position).Magnitude <= dist
+end
 Attack.Dist = function(model,dist) return (Root.Position - model:FindFirstChild("HumanoidRootPart").Position).Magnitude <= dist end
 Attack.DistH = function(model,dist) return (Root.Position - model:FindFirstChild("HumanoidRootPart").Position).Magnitude > dist end
 Attack.Kill = function(model,Succes)
@@ -148,7 +162,7 @@ Attack.Kill = function(model,Succes)
   BringEnemy()
   EquipWeapon(_G.SelectWeapon)
   local Equipped = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
-  local ToolTip = Equipped.ToolTip
+  local ToolTip = Equipped and Equipped.ToolTip or ""
   if ToolTip == "Blox Fruit" then _tp(model.HumanoidRootPart.CFrame * CFrame.new(0,10,0) * CFrame.Angles(0,math.rad(90),0)) else _tp(model.HumanoidRootPart.CFrame * CFrame.new(0,30,0) * CFrame.Angles(0,math.rad(180),0))end
   if RandomCFrame then wait(.5)_tp(model.HumanoidRootPart.CFrame * CFrame.new(0, 30, 25)) wait(.5)_tp(model.HumanoidRootPart.CFrame * CFrame.new(25, 30, 0)) wait(.5)_tp(model.HumanoidRootPart.CFrame * CFrame.new(-25, 30 ,0)) wait(.5)_tp(model.HumanoidRootPart.CFrame * CFrame.new(0, 30, 25)) wait(.5)_tp(model.HumanoidRootPart.CFrame * CFrame.new(-25, 30, 0))end
   end
@@ -160,7 +174,7 @@ Attack.Kill2 = function(model,Succes)
   BringEnemy()
   EquipWeapon(_G.SelectWeapon)
   local Equipped = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
-  local ToolTip = Equipped.ToolTip
+  local ToolTip = Equipped and Equipped.ToolTip or ""
   if ToolTip == "Blox Fruit" then _tp(model.HumanoidRootPart.CFrame * CFrame.new(0,10,0) * CFrame.Angles(0,math.rad(90),0)) else _tp(model.HumanoidRootPart.CFrame * CFrame.new(0,30,8) * CFrame.Angles(0,math.rad(180),0))end
   if RandomCFrame then wait(0.1)_tp(model.HumanoidRootPart.CFrame * CFrame.new(0, 30, 25)) wait(0.1)_tp(model.HumanoidRootPart.CFrame * CFrame.new(25, 30, 0)) wait(0.1)_tp(model.HumanoidRootPart.CFrame * CFrame.new(-25, 30 ,0)) wait(0.1)_tp(model.HumanoidRootPart.CFrame * CFrame.new(0, 30, 25)) wait(0.1)_tp(model.HumanoidRootPart.CFrame * CFrame.new(-25, 30, 0))end
   end
@@ -172,7 +186,7 @@ Attack.KillSea = function(model,Succes)
   BringEnemy()
   EquipWeapon(_G.SelectWeapon)
   local Equipped = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
-  local ToolTip = Equipped.ToolTip
+  local ToolTip = Equipped and Equipped.ToolTip or ""
   if ToolTip == "Blox Fruit" then _tp(model.HumanoidRootPart.CFrame * CFrame.new(0,10,0) * CFrame.Angles(0,math.rad(90),0)) else notween(model.HumanoidRootPart.CFrame * CFrame.new(0,50,8)) wait(.85)notween(model.HumanoidRootPart.CFrame * CFrame.new(0,400,0)) wait(1)end
   end
 end
