@@ -38,7 +38,8 @@ end)
 do
   ply = game.Players
   plr = ply.LocalPlayer
-  Root = plr.Character.HumanoidRootPart
+  local character = plr.Character or plr.CharacterAdded:Wait()
+  Root = character:WaitForChild("HumanoidRootPart")
   replicated = game:GetService("ReplicatedStorage")
   Lv = game.Players.LocalPlayer.Data.Level.Value
   TeleportService = game:GetService("TeleportService")
@@ -50,7 +51,7 @@ do
   TeamSelf = plr.Team
   RunSer = game:GetService("RunService")
   Stats = game:GetService("Stats")  
-  Energy = plr.Character.Energy.Value
+  Energy = character:WaitForChild("Energy").Value
   Boss = {}
   BringConnections = {}
   MaterialList = {}
